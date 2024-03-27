@@ -2,8 +2,9 @@ package prometheus
 
 import (
 	"database/sql"
-	"github.com/prometheus/client_golang/prometheus"
 	"reflect"
+
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 type DBStats struct {
@@ -22,6 +23,9 @@ type DBStats struct {
 }
 
 func newStats(labels map[string]string) *DBStats {
+	if len(labels) == 0 {
+		panic("empty labels")
+	}
 	stats := &DBStats{
 		MaxOpenConnections: prometheus.NewGauge(prometheus.GaugeOpts{
 			Name:        "gorm_dbstats_max_open_connections",
